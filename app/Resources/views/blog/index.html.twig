@@ -50,17 +50,18 @@
                 {% endif %}
             {% endblock %}
             {% block sidebar %}
-                <a href="{{ path('subscribe') }}" class="btn btn-lg btn-block btn-success">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                    {% if subscribe.subscribed == true %}
-                        Unsubscribe
-                    {% else %}
-                        Subscribe
+                    {% if subscribe.subscribed is defined %}
+                    <a href="{{ path('subscribe') }}" class="btn btn-lg btn-block btn-success">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        {% if subscribe.subscribed == true %}
+                            Unsubscribe
+                        {% else %}
+                            Subscribe
+                        {% endif %}
                     {% endif %}
                 </a>
                 <br>
                 {{ parent() }}
                 {{ show_source_code(_self) }}
                 {{ include('blog/_rss.html.twig') }}
-
-            {% endblock %} 
+            {% endblock %}
