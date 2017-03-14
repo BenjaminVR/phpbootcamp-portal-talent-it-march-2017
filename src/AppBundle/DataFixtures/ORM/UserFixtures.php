@@ -46,6 +46,7 @@ class UserFixtures extends AbstractFixture implements ContainerAwareInterface
         $annaAdmin->setRoles(['ROLE_ADMIN']);
         $encodedPassword = $passwordEncoder->encodePassword($annaAdmin, 'kitten');
         $annaAdmin->setPassword($encodedPassword);
+        $annaAdmin->setSubscribed(true);
         $manager->persist($annaAdmin);
         // In case if fixture objects have relations to other fixtures, adds a reference
         // to that object by name and later reference it to form a relation.
@@ -57,6 +58,7 @@ class UserFixtures extends AbstractFixture implements ContainerAwareInterface
         $johnUser->setEmail('john_user@symfony.com');
         $encodedPassword = $passwordEncoder->encodePassword($johnUser, 'kitten');
         $johnUser->setPassword($encodedPassword);
+        $johnUser->setSubscribed(false);
         $manager->persist($johnUser);
         $this->addReference('john-user', $johnUser);
 

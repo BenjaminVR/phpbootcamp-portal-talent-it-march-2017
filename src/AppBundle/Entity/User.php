@@ -57,6 +57,13 @@ class User implements UserInterface
      */
     private $roles = [];
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $subscribed;
+
     public function getId()
     {
         return $this->id;
@@ -142,5 +149,13 @@ class User implements UserInterface
     {
         // if you had a plainPassword property, you'd nullify it here
         // $this->plainPassword = null;
+    }
+
+    public function getSubscribed(){
+        return $this->subscribed;
+    }
+
+    public function setSubscribed($subscribed){
+        $this->subscribed = $subscribed;
     }
 }

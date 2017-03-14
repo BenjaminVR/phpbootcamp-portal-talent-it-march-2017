@@ -13,6 +13,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Post;
+use AppBundle\Entity\User;
 use AppBundle\Events;
 use AppBundle\Form\CommentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -49,11 +50,14 @@ class BlogController extends Controller
     public function indexAction($page, $_format)
     {
         $posts = $this->getDoctrine()->getRepository(Post::class)->findLatest($page);
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $subscribe = $em->getRepository('AppBundle:User')->find($user);
 
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templating.html#template-suffix
-        return $this->render('blog/index.'.$_format.'.twig', ['posts' => $posts]);
+        return $this->render('blog/index.'.$_format.'.twig', ['posts' => $posts, 'subscribe' => $subscribe]);
     }
 
     /**
@@ -149,5 +153,40 @@ class BlogController extends Controller
             'post' => $post,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route(" /index", name="subscribe")
+     *
+     * @Method("GET")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function subscribeAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $subscribe = $em->getRepository('AppBundle:User')->find($user);
+
+        if($subscribe->getSubscribed() == true)
+        {
+            $subscribe->setSubscribed(false);
+            $this->addFlash(
+                'notice',
+                'You are now unsubscribed. You will no longer receive our newsletters!'
+            );
+        } else {
+            $subscribe->setSubscribed(true);
+            $this->addFlash(
+                'notice',
+                'Thank you for subscribing!'
+            );
+        }
+
+        $em->flush();
+
+
+
+        return $this->redirectToRoute('blog_index');
     }
 }
