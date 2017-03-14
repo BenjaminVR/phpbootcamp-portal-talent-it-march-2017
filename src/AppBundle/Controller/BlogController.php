@@ -172,13 +172,13 @@ class BlogController extends Controller
         {
             $subscribe->setSubscribed(false);
             $this->addFlash(
-                'notice',
+                'warning',
                 'You are now unsubscribed. You will no longer receive our newsletters!'
             );
         } else {
             $subscribe->setSubscribed(true);
             $this->addFlash(
-                'notice',
+                'success',
                 'Thank you for subscribing!'
             );
         }

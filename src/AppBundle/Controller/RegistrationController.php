@@ -27,6 +27,7 @@ class RegistrationController extends Controller
       $encoder = $this->container->get('security.password_encoder');
       $encoded = $encoder->encodePassword($user, $user->getPassword());
       $user->setPassword($encoded);
+      $user->setSubscribed(false);
 
       $em = $this->getDoctrine()->getManager();
       $em->persist($user);

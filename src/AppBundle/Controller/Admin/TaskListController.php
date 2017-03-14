@@ -63,7 +63,7 @@ class TaskListController extends Controller
             $sn -> flush();
 
             $this->addFlash(
-                'notice',
+                'success',
                 'Task Added'
             );
 
@@ -125,7 +125,7 @@ class TaskListController extends Controller
             $sn -> flush();
 
             $this->addFlash(
-                'notice',
+                'success',
                 'Task Updated'
             );
 
@@ -143,7 +143,6 @@ class TaskListController extends Controller
      */
     public function deleteAction($id)
     {
-
         $sn = $this->getDoctrine()->getManager();
         $task = $sn->getRepository('AppBundle:TaskList')->find($id);
 
@@ -151,7 +150,7 @@ class TaskListController extends Controller
         $sn->flush();
 
         $this->addFlash(
-            'notice',
+            'warning',
             'Task Removed'
         );
 
